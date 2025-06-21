@@ -12,7 +12,7 @@
 			"ssisProperties": {
 				"catalogInfo": {
 					"catalogServerEndpoint": "demotest2.database.windows.net",
-					"catalogAdminUserName": "sairam_kanamarlapudi",
+					"catalogAdminUserName": "demo",
 					"catalogAdminPassword": {
 						"type": "SecureString",
 						"value": "**********"
