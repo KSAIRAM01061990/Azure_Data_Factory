@@ -1,0 +1,36 @@
+{
+	"name": "Pivot",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DataflowSource",
+						"type": "DatasetReference"
+					},
+					"name": "ExcelSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dftOutput",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Pivot1"
+				},
+				{
+					"name": "MapDrifted1",
+					"description": "Creates an explicit mapping for each drifted column"
+				}
+			],
+			"script": "source(output(\n\t\tName as string,\n\t\tyear as short,\n\t\tAmount as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ExcelSource\nExcelSource pivot(groupBy(Name),\n\tpivotBy(year),\n\tYear_ = sum(Amount),\n\tcolumnNaming: '$N$V',\n\tlateral: true) ~> Pivot1\nPivot1 derive(Year_2011 = toDouble(byName('Year_2011')),\n\t\tYear_2012 = toDouble(byName('Year_2012')),\n\t\tYear_2013 = toDouble(byName('Year_2013')),\n\t\tYear_2014 = toDouble(byName('Year_2014'))) ~> MapDrifted1\nMapDrifted1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['Output.csv'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}

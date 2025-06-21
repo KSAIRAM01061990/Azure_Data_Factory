@@ -1,0 +1,22 @@
+{
+	"name": "DataflowSource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageforEmployeeFile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "YearWiseData.xlsx",
+				"container": "dataflowsource"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

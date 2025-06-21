@@ -1,0 +1,24 @@
+{
+	"name": "UnpivotData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageforEmployeeFile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "UnPivot.csv",
+				"container": "dataflowsource"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

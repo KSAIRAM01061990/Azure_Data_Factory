@@ -1,0 +1,35 @@
+{
+	"name": "Flatten",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SourceJson",
+						"type": "DatasetReference"
+					},
+					"name": "JsonQuery"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dftOutput",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Flatten1"
+				},
+				{
+					"name": "Flatten2"
+				}
+			],
+			"script": "source(output(\n\t\tbatters as (batter as (id as short, type as string)[]),\n\t\tid as short,\n\t\tname as string,\n\t\tppu as double,\n\t\ttopping as (id as short, type as string)[],\n\t\ttype as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'singleDocument') ~> JsonQuery\nJsonQuery foldDown(unroll(batters.batter),\n\tmapColumn(\n\t\t{batters.batter.id} = batters.batter.id,\n\t\t{batters.batter.type} = batters.batter.type,\n\t\tid,\n\t\tname,\n\t\tppu,\n\t\ttopping\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nFlatten1 foldDown(unroll(topping, topping),\n\tmapColumn(\n\t\t{batters.batter.id},\n\t\t{batters.batter.type},\n\t\tid,\n\t\tname,\n\t\tppu,\n\t\t{topping.id} = topping,\n\t\t{topping.type} = topping\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten2\nFlatten2 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['JsondataOutput.csv'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}

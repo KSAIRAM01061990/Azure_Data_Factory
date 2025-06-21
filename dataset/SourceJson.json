@@ -1,0 +1,20 @@
+{
+	"name": "SourceJson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageforEmployeeFile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Data.json",
+				"container": "adfcontainer"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

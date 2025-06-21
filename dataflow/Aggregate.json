@@ -1,0 +1,35 @@
+{
+	"name": "Aggregate",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Excel1",
+						"type": "DatasetReference"
+					},
+					"name": "ExcelSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Dataflowsink",
+						"type": "DatasetReference"
+					},
+					"name": "ExcelOutputdata"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Salarygraterthan300"
+				},
+				{
+					"name": "DerivedColumn1"
+				}
+			],
+			"script": "source(output(\n\t\tEMPID as short,\n\t\tName as string,\n\t\tSalary as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ExcelSource\nExcelSource split(Salary>=300,\n\tdisjoint: true) ~> Salarygraterthan300@(Salarygreaterthan300)\nSalarygraterthan300@Salarygreaterthan300 derive(LoadDate = currentUTC()) ~> DerivedColumn1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> ExcelOutputdata"
+		}
+	}
+}

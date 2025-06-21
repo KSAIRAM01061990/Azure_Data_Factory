@@ -1,0 +1,17 @@
+{
+	"name": "Snowflake",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SnowflakeV2",
+		"typeProperties": {
+			"authenticationType": "Basic",
+			"accountIdentifier": "ijworad-xv15864",
+			"user": "SAIRAM",
+			"database": "DEV_LND",
+			"warehouse": "COMPUTE_WH",
+			"role": "ACCOUNTADMIN",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEI4Q0JCRDQ3LThDMjAtNEQ1NS05NjZCLTJFOEQ4QkZCQkUwMl9iZWNjODc2MS1mYzI4LTQzNjEtOWEyOC00OWE4MWYxMGU5NGQiDQp9"
+		}
+	}
+}

@@ -1,0 +1,32 @@
+{
+	"name": "Unpivot",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "UnpivotData",
+						"type": "DatasetReference"
+					},
+					"name": "UnpivotData"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dftOutput",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Unpivot1"
+				}
+			],
+			"script": "source(output(\n\t\tName as string,\n\t\tYear_2011 as double,\n\t\tYear_2012 as double,\n\t\tYear_2013 as double,\n\t\tYear_2014 as double\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> UnpivotData\nUnpivotData unpivot(output(\n\t\tYEAR as string,\n\t\tAmount as double\n\t),\n\tungroupBy(Name),\n\tlateral: true,\n\tignoreNullPivots: false) ~> Unpivot1\nUnpivot1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['Unpivot.csv'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}
